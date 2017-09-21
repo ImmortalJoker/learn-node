@@ -1,0 +1,29 @@
+mixin storeCard(store = {})
+    .store
+        .store__hero
+            .store__actions
+                if user
+                    .store__action.store__action--heart
+                        form.heart(action=urls.API_FAVORITE_STORE_URL(store._id) method='POST')
+                            - const heartsString = user.hearts.map(obj => obj.toString());
+                            - const heartClass = heartsString.includes(store._id.toString()) ? 'heart__button--hearted' : ''
+                            button.heart__button(type='submit' name='heart' class=heartClass title='Add to favorite')
+                                != h.icon('heart')
+                if user && store.author.equals(user._id)
+                    .store__action.store__action--edit
+                        a(href=urls.STORE_EDIT_URL(store._id) title='Edit Store')
+                            !=h.icon('pencil')
+
+                if store.reviews
+                    a.store__action.store__action--count(href=`${urls.STORE_URL(store.slug)}#reviews` title='Number of Reviews')
+                        != h.icon('review')
+                        span= store.reviews.length
+
+            - const photo = store.photo[0] || 'store.png'
+            img(src=urls.UPLOADS_RESOURCES_URL(photo) alt=store.name)
+
+            h2.title
+                a(href=urls.STORE_URL(store.slug)) #{store.name}
+
+        .store__details
+            p= store.description.split(' ').slice(0, 25).join(' ')

@@ -1,0 +1,21 @@
+extends layout
+
+include mixins/_storeCard
+
+block content
+    .inner
+        h2 #{currentTag || 'Tags'}
+
+        ul.tags
+            each tag in tags
+                li.tag
+                    a.tag__link(href=urls.TAG_URL(tag._id) title=`${tag._id}(${tag.count})` class=(tag._id === currentTag ? 'tag__link--active' : ''))
+                        span.tag__text #{tag._id}
+                        span.tag__count #{tag.count}
+
+        if stores
+            .stores
+                each store in stores
+                    +storeCard(store)
+        else
+            p.no__stores!= (!currentTag ? 'Sorry there is no stores.' : `Sorry there is no stores for <mark>${currentTag}</mark>`)

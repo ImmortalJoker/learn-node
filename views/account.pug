@@ -1,0 +1,16 @@
+extends layout
+
+block content
+    .inner
+        h2= title
+
+        form(action='/account' method='POST')
+            .wrapper
+                label(for='name') Name
+                input(type='text' name='name' value=user.name)
+
+            .wrapper
+                label(for='email') Email Adddress
+                input(type='text' name='email' value=user.email)
+
+            input.button(type='submit' value='Update My Account')

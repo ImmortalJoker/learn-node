@@ -1,0 +1,46 @@
+mixin storeForm(store = {})
+    form(action=urls.STORE_UPDATE_URL(store._id || '') method='POST' class='card' enctype='multipart/form-data')
+        .step__1
+            .wrapper
+                label(for='name') Name
+                input(type='text' name='name' value=store.name required)
+
+            .wrapper
+                label(for='address') Address
+                input(type='text' id='address' name='location[address]' value=(store.location && store.location.address))
+
+            .wrapper.hidden
+                label(for='lng') Longitude
+                input(type='text' id='lng' name='location[coordinates][0]' value=(store.location && store.location.coordinates[0]) required)
+
+            .wrapper.hidden
+                label(for='lat') Latitude
+                input(type='text' id='lat' name='location[coordinates][1]' value=(store.location && store.location.coordinates[1]) required)
+
+        .step__2
+            .wrapper
+                label(for='description') Description
+                textarea(name='description')= store.description
+
+            .wrapper
+                label(for='photo') Photo
+                input.hidden#photo(type='file' name='photo' accept='image/gif, image/png, image/jpeg')
+
+                .images
+                    if store.photo
+                        each photo in store.photo
+                            .img__wrapper
+                                img(src=urls.UPLOADS_RESOURCES_URL(photo) alt=store.name)
+                    label.img__wrapper.empty__image(for='photo' title='Click me to upload a new photo!')
+
+            .wrapper
+                - const choices = ['Wifi', 'Open Late', 'Family Friendly', 'Vegetarian', 'Licensed']
+                - const tags = store.tags || []
+                label Tags
+                ul.tags
+                    each choice in choices
+                        tag.tag__choice
+                            input(type='checkbox' id=choice value=choice name='tags' checked=(tags.includes(choice)))
+                            label(for=choice) #{choice}
+
+        input(type='submit' value='Save' class='button')

@@ -1,0 +1,10 @@
+mixin pagination(page, pages, count)
+    .pagination
+        .pagination__prev
+            if page > 1
+                a(href=urls.STORES_BY_PAGE_URL(page - 1)) Prev
+        .pagination__text
+            p Page #{page} of #{pages} - #{count} total results
+        .pagination__next
+            if page < pages
+                a(href=urls.STORES_BY_PAGE_URL(parseFloat(page) + 1)) Next
